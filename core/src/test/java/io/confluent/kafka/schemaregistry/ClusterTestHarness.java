@@ -83,7 +83,7 @@ public abstract class ClusterTestHarness {
     int numPorts = 1 + numBrokers + (setupRestApp ? 1 : 0);
 
     ports = new ArrayDeque<Integer>();
-    for (Object portObj : JavaConversions.asJavaList(TestUtils.choosePorts(numPorts))) {
+    for (Object portObj : JavaConversions.seqAsJavaList(TestUtils.choosePorts(numPorts))) {
       ports.add((Integer) portObj);
     }
     zkPort = ports.remove();
@@ -124,7 +124,7 @@ public abstract class ClusterTestHarness {
       throw new RuntimeException("Must supply at least one server config.");
     }
     brokerList =
-        TestUtils.getBrokerListStrFromConfigs(JavaConversions.asScalaIterable(configs).toSeq());
+        TestUtils.getBrokerListStrFromConfigs(JavaConversions.iterableAsScalaIterable(configs).toSeq());
     servers = new Vector<KafkaServer>(configs.size());
     for (KafkaConfig config : configs) {
       KafkaServer server = TestUtils.createServer(config, SystemTime$.MODULE$);
